@@ -22,6 +22,7 @@
     * Load Balancer (ELB) 
     * Kubernetes (EKS) 
     * Registry ECR
+    * SSM (Systems Manager)
     * Security Groups 
     * IAM 
     * CloudWatch
@@ -38,37 +39,34 @@
 
 * Balanceador de carga (ELB)
 * Servicio de cache para contenido estático. Elasticache
-* CDN: mejora la eficacia al introducir servidores intermediarios entre el cliente y el servidor del sitio web. Estos servidores de CDN administran algunas de las comunicaciones entre el cliente y el servidor. Disminuyen el tráfico web hacia el servidor web, reducen el consumo de ancho de banda y mejoran la experiencia de los usuarios de las aplicaciones.
 * Escalabilidad Horizontal: usando docker y EKS (Elastic Kubernetes Service)
     - Escalabilidad automática: usando Auto Scaling Groups
     - Asignando límite de recursos en función de lo que voy a usar CPU y memoria
-    - En caso de que un pod esté caído por falla, se levanta otro automáticamente
+    - En caso de que un pod esté caído por falla, Kubernetes levanta otro automáticamente.
     - También mejora el deployment de una versión nueva ya que reemplaza la imagen con un tag de versión más nuevo en el caso de latest reemplaza por la subida recientemente.
 * Monitorización y Registro: CloudWatch y CloudTrail
-* Gestión de Errores y Reintentos: política de Retry con tiempo exponencial
+* Gestión de Errores y Reintentos: política de Retry con tiempo exponencial backoff 
 * Monitorización de Rendimiento
 
 # ¿Cómo lograrías escalabilidad si aumenta la cantidad de ventas (o la cantidad de ecommerces en el mismo sistema)?
 
-* Tener un arquitectura basada en microservicios para bajar el acoplamiento y que puedan escalar de manera independiente
+* Escalabilidad Horizontal y autoscaling servicio on demand.
+* Tener un arquitectura basada en microservicios para bajar el acoplamiento y que se puedan escalar de manera independiente
 * Contenedorización (docker)
 * Orquestación (Kubernetes)
-* Escalabilidad Horizontal y autoscaling.
 * Base de datos NoSql para que puedan crecer bajo demanda horizontalmente.
-* Uso de CDN y Caché
+*  Caché (contenido estatico)
 * Monitoreo y Ajuste: CloudWatch y CloudTrail
 
 # ¿Cómo atenderías la seguridad de la solución?
 
-* Configuración de un VPC (Virtual Private Cloud)
-* Configuración de redes públicas y privadas (subnets)
-* Configuración de un Load Balancer (ELB)
+* Configuración de subnets públicas y privadas (subnets)
 * API Gateway para prevenir contra ataques DDoS e inyección SQL
-* Ingress Controller si estoy usando clusters de Kubernetes.
 * Firewall y Security groups con reglas de entrada.
+* Dar los permisos adecuados por usuario y por recurso. 
+* En caso de EKS se configura 
 * Usar HTTPS para encriptar el tráfico y certificados SSL
-* Usar IAM para gestionar los permisos de los usuarios
-* NAT Gateway para el tráfico saliente de la aplicación a internet.
+* Usar IAM para gestionar los permisos de los usuarios dar permisos de manera granular para cada accion
 * NAT Gateway para tráfico de salida de la aplicación a internet (actualización de paquetes, etc)
 * OAuth 2.0
     * Refresh token
@@ -86,13 +84,17 @@
     - Escalabilidad
     - Cifrado y Certificados SSL (Let's Encrypt autorenovados)
     - Monitorización de Seguridad:
+    - Mantenimiento automatizado 
+    - En la caso de usar Terraform se configura la infraestructura con tres comandos. 
+      - terraform init
+      - terraform plan
+      - terraform apply
 
 * Contras
 
     - Complejidad
     - Costos
-    - Curva de aprendizaje
-    - Mantenimiento
+    - Curva de aprendizaje larga
 
 # ¿Qué errores recurrentes podrían existir y cómo se podrían mitigar / atacar?
 
